@@ -21,6 +21,8 @@ var gameOver = false;
 var RADIANS_TO_DEGREES = 57.2957795;
 
 var scoreTextA, scoreTextB, scoreTextC;
+var scoreTextA_num, scoreTextB_num, scoreTextC_num;
+
 // offset of UI elements
 var horizontalOffset = 20;
 var verticalOffset = 15;
@@ -28,7 +30,8 @@ var verticalOffset = 15;
 var game = new Phaser.Game(width, height, Phaser.AUTO, '', 
   { preload: preload, 
     create: create, 
-    update: update
+    update: update,
+    render: render
   });
 
 
@@ -79,8 +82,9 @@ function create() {
       scoreTextA = game.add.image(width - (horizontalOffset + (w * 3)),verticalOffset,'0');
       scoreTextB = game.add.image(width - (horizontalOffset + (w * 2)),verticalOffset,'0');
       scoreTextC = game.add.image(width - (horizontalOffset + w),verticalOffset,'0');
-
-      console.log('0'.height);
+      scoreTextA_num = 0;
+      scoreTextB_num = 0;
+      scoreTextC_num = 0;
 
       // game.input.onDown.add(newShip, this);
 
@@ -91,12 +95,14 @@ function create() {
   function update() {
       checkCollisions();
       checkLanding();
-      updateUI();
-      // Maybe spawn new objects if we've hit threshold
-     //spawn();
-
-     //console.log(game.timer.seconds);
   }
+
+   function render() {
+   //    this.game.debug.body(this.bullet);
+  //  this.game.debug.body(this.enemy);
+    
+    updateUI();
+   }
 
   function spawn() {
      //spawnDelta;
@@ -108,108 +114,6 @@ function create() {
 
    }
   } // end spawn function
-
-function randNum(max) {
-  return game.rnd.integerInRange(0,max);
-}
-
-/* add a ship at a random spot on screen */
-function newShip() {
-  var img;
-  var r = randNum(2);
-
-  var speed;
-
-  switch(r) {
-    case 0: img = 'ship1';
-            speed = SHIP1_SPEED;
-            break;
-    case 1: img = 'ship2';
-            speed = SHIP2_SPEED;
-            break;
-    case 2: img = 'ufo';
-            speed = UFO_SPEED;
-            break;
-    default: img = 'ship1';
-             speed = SHIP1_SPEED;
-             break;
-  }
-
-// TODO: Add to group differently
-// Start at one of four corners (0 = upper left, 1 = upper right, 2 = lower right, 3 = lower left)
-// Random angle between 10 and 80
-  var ship = game.add.sprite(game.world.randomX,game.world.randomY,img);
-
-  ship.scale.x = IMAGE_SCALE;
-  ship.scale.y = IMAGE_SCALE;
-
-  game.physics.arcade.enable(ship);
-  
-  // angle 
-  //ship.angle = randNum(80) + 10;
-
-//  var speed = randNum(shipMaxSpeed);
-
-  ship.body.velocity.set(speed,speed);
-
-  var rot = game.physics.arcade.moveToXY(
-    ship,
-    randNum(1000),
-    randNum(600),
-    speed);
-  // returns result in radians
-
-  numShips++;
-  console.log("Ship created: total count is: " + numShips);
-  //if (rot < 0) { 
-   // ship.angle = rot * RADIANS_TO_DEGREES + 90;
-  //}
-  //else {
- //  ship.angle = rot * RADIANS_TO_DEGREES - 90;
-//  }
-
-// need to account for the different rotation of individual images
-if (img == "ship1") {
-  offset = -90;
-}
-else {
-  var offset = 90;
-}
-  ship.angle = rot * RADIANS_TO_DEGREES - offset;
-  // destination: is this needed? just act on collision with world bounds?
-  
-  ship.body.collideWorldBounds = false;
-  game.physics.arcade.gravity.x = 0;
-  ship.body.moves = true;
-
-  ships.add(ship);
- } 
-
-/* add an obstacle at a random spot on screen */
-function newObstacle() {
-  var img;
-  var r = randNum(1);
-
-  switch(r) {
-    case 0: img = 'meteorSmall';
-    break;
-    case 1: img = 'meteorLarge';
-    break;
-    default: img = 'meteorSmall';
-
-  }
-  
-  var obs = game.add.sprite(game.world.randomX,game.world.randomY,img);
-  
-  game.physics.arcade.enable(obs);
-  game.physics.arcade.gravity.x = 0;
- 
-  obs.body.collideWorldBounds = false;
-  obs.body.rotation = randNum(180);
-  obs.body.velocity.set(randNum(OBSTACLE_MAX_SPEED), 0);
-
-  obstacles.add(obs);
-}
 
 
 //
@@ -248,29 +152,26 @@ function updateUI() {
   // 
   if (s > 999) s = 999;
   var padScore = padNum(s) + "";
-  console.log("score = " + padScore)
+  //console.log("score = " + padScore)
   
   var a = padScore.substring(0,1);
   var b = padScore.substring(1,2);
   var c = padScore.substring(2,3);
 
-  scoreTextA.loadTexture(a);
-  scoreTextB.loadTexture(b);
-  scoreTextC.loadTexture(c);
+  // Now update textures with new textures if necessary
+  // TODO: Figure out a better way to get name of texture 
+  if (scoreTextA_num != a) {
+    scoreTextA.loadTexture(a);
+    scoreTextA_num = a;
+  }
+  if (scoreTextB_num != b) {
+    scoreTextB.loadTexture(b);
+    scoreTextB_num = b;
+  }
+  if (scoreTextC_num != c) {
+    scoreTextC.loadTexture(c);
+    scoreTextC_num = c;
+ }
 
 }
 
-function padNum(num) {
-  // Pads score 
-  // TODO: Make this better
-  if (num < 10) {
-     return "00" + num;
-  }
-  else {
-    if (num < 100) {
-      return ("0") + num;
-    }
-    else return num;
-  }
-
-}
