@@ -29,6 +29,7 @@ function newShip() {
   ship.scale.y = IMAGE_SCALE;
 
   game.physics.arcade.enable(ship);
+
   
   // angle 
   //ship.angle = randNum(80) + 10;
@@ -61,6 +62,9 @@ else {
   var offset = 90;
 }
   ship.angle = rot * RADIANS_TO_DEGREES - offset;
+
+  //ship.angle = body.polygon.rotate(rot * RADIANS_TO_DEGREES - offset);
+
   // destination: is this needed? just act on collision with world bounds?
   
   ship.body.collideWorldBounds = false;

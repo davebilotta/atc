@@ -58,7 +58,6 @@ function preload() {
       game.load.image('8', 'images/numbers/8.png');
       game.load.image('9', 'images/numbers/9.png');
    
-
   }
 
 function create() {
@@ -70,13 +69,7 @@ function create() {
       score = 0;
       numShips = 0;
 
-      scoreText = game.add.text(0, 0, ("Score: " + score), {      
-        font: "30px Arial", 
-        fill: "#ff0044", 
-        align: "center" 
-      });
-
-      // score is 3 digits (2a, 2b, 2c left to right)
+       // score is 3 digits (2a, 2b, 2c left to right)
       // number images are 19x19
       var w = 20;
       scoreTextA = game.add.image(width - (horizontalOffset + (w * 3)),verticalOffset,'0');
@@ -86,29 +79,40 @@ function create() {
       scoreTextB_num = 0;
       scoreTextC_num = 0;
 
-      // game.input.onDown.add(newShip, this);
-
       this.game.time.events.loop(TIMER_DELAY * 1000, spawn, this);
 
-  }
+  } // end create
 
   function update() {
       checkCollisions();
       checkLanding();
-  }
+  } // end update
 
-   function render() {
-   //    this.game.debug.body(this.bullet);
-  //  this.game.debug.body(this.enemy);
-    
+  function render() {
+    debugShips();
+    debugObstacles();
+
     updateUI();
-   }
+  } // end render
+
+  function debugShips() {
+      for (var i = 0; i<ships.length; i++) {
+            this.game.debug.body(ships.getAt(i));
+    }
+  } // end debugShips
+
+  function debugObstacles() {
+    for (var i = 0; i<obstacles.length; i++) {
+            this.game.debug.body(obstacles.getAt(i));
+    }
+  } // end debugObstacles
 
   function spawn() {
      //spawnDelta;
      //console.log(timer.expired);
      if (!gameOver) {
      newShip();
+     newObstacle();
 
      // TODO: Maybe create new obstacle?
 
@@ -125,14 +129,23 @@ function checkCollisions() {
 
 function shipShipCollision() {
   console.log("SHIP TO SHIP COLLISION");
-
-  gameOver = true;
+  levelEnd();
 }
 
 function shipObsCollision() {
   console.log("SHIP TO OBSTACLE COLLISION");
+  levelEnd();
+}
 
+function levelEnd() {
   gameOver = true;
+
+     scoreText = game.add.text(0, 0, ("GAME OVER"), {      
+        font: "30px Arial", 
+        fill: "#ff0044", 
+        align: "center" 
+      });
+
 }
 
 function checkLanding() {

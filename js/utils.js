@@ -13,7 +13,7 @@ function padNum(num) {
     else return num;
   }
 } // end padNum
-
+  
 function randNum(max) {
   return game.rnd.integerInRange(0,max);
 } // end randNum
