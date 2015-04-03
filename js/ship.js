@@ -1,75 +1,44 @@
 /* Ship-related functions */
-function newShip() {
-  var img;
-  var r = randNum(2);
 
-  var speed;
+var speeds =  [SHIP1_SPEED, SHIP2_SPEED, UFO_SPEED];
+var images = ['ship1', 'ship2', 'ufo'];
 
-  switch(r) {
-    case 0: img = 'ship1';
-            speed = SHIP1_SPEED;
-            break;
-    case 1: img = 'ship2';
-            speed = SHIP2_SPEED;
-            break;
-    case 2: img = 'ufo';
-            speed = UFO_SPEED;
-            break;
-    default: img = 'ship1';
-             speed = SHIP1_SPEED;
-             break;
-  }
+function Ship() {
+   
+  num = randNum(2);
 
-// TODO: Add to group differently
-// Start at one of four corners (0 = upper left, 1 = upper right, 2 = lower right, 3 = lower left)
-// Random angle between 10 and 80
-  var ship = game.add.sprite(game.world.randomX,game.world.randomY,img);
+  this.speed = speeds[num];
+  this.img = images[num];
+  this.ship =  game.add.sprite(game.world.randomX,game.world.randomY,this.img);
 
-  ship.scale.x = IMAGE_SCALE;
-  ship.scale.y = IMAGE_SCALE;
-
-  game.physics.arcade.enable(ship);
-
-  
-  // angle 
-  //ship.angle = randNum(80) + 10;
-
-//  var speed = randNum(shipMaxSpeed);
-
-  ship.body.velocity.set(speed,speed);
+  this.ship.scale.x = IMAGE_SCALE;
+  this.ship.scale.y = IMAGE_SCALE;
+  game.physics.arcade.enable(this.ship);
+  this.ship.body.velocity.set(this.speed,this.speed);
 
   var rot = game.physics.arcade.moveToXY(
-    ship,
+    this.ship,
     randNum(1000),
     randNum(600),
-    speed);
-  // returns result in radians
+    this.speed);
+  
+  // need to account for the different rotation of individual images
+  if (this.img == "ship1") offset = -90;
+  else  offset = 90;
 
-  numShips++;
-  console.log("Ship created: total count is: " + numShips);
-  //if (rot < 0) { 
-   // ship.angle = rot * RADIANS_TO_DEGREES + 90;
-  //}
-  //else {
- //  ship.angle = rot * RADIANS_TO_DEGREES - 90;
-//  }
-
-// need to account for the different rotation of individual images
-if (img == "ship1") {
-  offset = -90;
-}
-else {
-  var offset = 90;
-}
-  ship.angle = rot * RADIANS_TO_DEGREES - offset;
-
-  //ship.angle = body.polygon.rotate(rot * RADIANS_TO_DEGREES - offset);
+  this.ship.angle = rot * RADIANS_TO_DEGREES - offset;
 
   // destination: is this needed? just act on collision with world bounds?
   
-  ship.body.collideWorldBounds = false;
+  this.ship.body.collideWorldBounds = false;
   game.physics.arcade.gravity.x = 0;
-  ship.body.moves = true;
+  this.ship.body.moves = true;
 
-  ships.add(ship);
- } 
+ return this.ship; 
+}
+
+function stopAllShips() {
+ for (var i = 0; i<ships.length; i++) {
+      ships.getAt(i).body.velocity.set(0,0);
+  }
+}

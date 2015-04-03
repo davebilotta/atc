@@ -24,3 +24,9 @@ function newObstacle() {
 
   obstacles.add(obs);
 }
+
+function stopAllObstacles() {
+ for (var i = 0; i<obstacles.length; i++) {
+      obstacles.getAt(i).body.velocity.set(0,0);
+  }
+}
