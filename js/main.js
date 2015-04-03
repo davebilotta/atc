@@ -17,6 +17,7 @@
   var IMAGE_SCALE = 0.33; // Image scaling factor
 
   var gameOver = false;
+  var gameOverDelay = 1;  //  How many seconds before displaying "Game Over" screen
 
   var RADIANS_TO_DEGREES = 57.2957795;
 
@@ -84,12 +85,10 @@
 
         // Show pause image
         var pause = game.add.button(0,0,'pause',gamePause,this);
-  
 
       },
 
       update: function() {
-
         checkCollisions();
         checkLanding();
       },
@@ -104,10 +103,6 @@
 
     var game = new Phaser.Game(width, height, Phaser.AUTO, 'game');
     game.state.add('game', Game);
-
-   // this.game.state.add('gameOver', gameOver);
-    //this.game.state.add('pause', pause);
-
     game.state.start('game');
 
 
@@ -162,9 +157,14 @@
     stopAllShips();
     stopAllObstacles();
 
-    // TODO: Maybe pause a few seconds here?
-    this.game.state.start('gameOverState');
+    game.time.events.add(gameOverDelay * 1000, goToGameOverState, this);;
+
+//    this.game.state.start('gameOverState');
   } // end levelEnd
+
+  function goToGameOverState() {
+      this.game.state.start('gameOverState');
+  }
 
   function checkLanding() {
 
