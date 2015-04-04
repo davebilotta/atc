@@ -4,6 +4,8 @@
   var score;
   var numShips;
 
+  var debug = false;
+  
   var width = 1024;
   var height = 768;
 
@@ -17,7 +19,7 @@
   var IMAGE_SCALE = 0.33; // Image scaling factor
 
   var gameOver = false;
-  var gameOverDelay = 1;  //  How many seconds before displaying "Game Over" screen
+  var gameOverDelay = 1.5;  //  How many seconds before displaying "Game Over" screen
 
   var RADIANS_TO_DEGREES = 57.2957795;
 
@@ -94,8 +96,10 @@
       },
 
       render: function() {
-        debugShips();
-        debugObstacles();
+        if (debug) {
+          debugShips();
+          debugObstacles();
+        }
 
         updateUI();
       }
@@ -137,18 +141,15 @@
   //
   function checkCollisions() {
     // Check collision between ships and obstacles
-    game.physics.arcade.overlap(ships, obstacles,shipObsCollision);
-    // Check collision between ships and other ships
-    game.physics.arcade.collide(ships,ships,shipShipCollision);
+    if (!gameOver) {
+      game.physics.arcade.collide(ships, ships, collisionEvent);
+      game.physics.arcade.overlap(ships, obstacles, collisionEvent);
+      //game.physics.arcade.overlap(obstacles, obstacles, collisionEvent);
+    }
   }
 
-  function shipShipCollision() {
-    console.log("SHIP TO SHIP COLLISION");
-    levelEnd();
-  }
-
-  function shipObsCollision() {
-    console.log("SHIP TO OBSTACLE COLLISION");
+  function collisionEvent() {
+    console.log("COLLISION");
     levelEnd();
   }
 

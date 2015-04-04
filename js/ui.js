@@ -41,12 +41,18 @@ update: function() {
 }
 };
 
+
+ 
+
 function gamePause() {
 	console.log("PAUSE clicked");
 	
 	//game.state.start('pause');
 
 	this.game.paused = true;
+	
+	//this.game.hide();
+//	this.pauseOverlay.show();
     /*var pausedText = this.add.text(100, 250, "Game paused.\nTap anywhere to continue.", this._fontStyle);
     this.input.onDown.add(function(){
         pausedText.destroy();
@@ -54,18 +60,26 @@ function gamePause() {
     }, this);
     */
 
-    var playImage = game.add.button(0,0,'play');
+    var pauseOverlay = game.add.text(400, (game.height/2), ("PAUSE"), 
+    {      
+			font: "60px Verdana", 
+			fill: "#ff0044", 
+			align: "center"});
+
+   // var playImage = game.add.button(100,0,'play',gamePlay, this);
+    
     this.input.onDown.add(function() {
-    	playImage.destroy();
-    	this.game.paused = false;
-    },this);
+    		//playImage.destroy();
+    		this.game.paused = false;
+    		pauseOverlay.destroy();
+    	
+    },this); 
 	
 }
 
 function gamePlay() {
 	console.log("PLAY clicked");
+	this.game.paused = false;
+	pauseOverlay.destroy();
 	
-	game.state.start('game');
-	//game.paused = false;
-
 }
