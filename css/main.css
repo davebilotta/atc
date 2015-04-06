@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Future';
+    src: url('future-webfont.eot');
+    src: url('future-webfont.eot?#iefix') format('embedded-opentype'),
+         url('future-webfont.woff2') format('woff2'),
+         url('future-webfont.woff') format('woff'),
+         url('future-webfont.ttf') format('truetype'),
+         url('future-webfont.svg#kenvector_futureregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    
+}
+
+canvas {
+	font-family: "Future";
+}
