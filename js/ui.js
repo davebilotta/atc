@@ -56,9 +56,14 @@ function gamePlay() {
 }
 
 function updateUI() {  
-// TODO: change this back to score once testing is done 
-var s = numShips;
+	// TODO: change this back to score once testing is done 
+	var s = numShips;
 
-scoreText.setText("Score: " + s);
+	scoreText.setText("Score: " + padNum(s));
+//	console.log("width: " + scoreText.width);
+//	scoreText.x = (width - scoreText.width);
+}
+
+function pad() {
 
 }

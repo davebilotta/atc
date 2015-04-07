@@ -27,14 +27,14 @@ var scoreTextA, scoreTextB, scoreTextC;
 var scoreTextA_num, scoreTextB_num, scoreTextC_num;
 
 // offset of UI elements
-var horizontalOffset = 20;
-var verticalOffset = 15;
+// /var horizontalOffset = 20;
+//var verticalOffset = 15;
+var padding = 10;
 
 var Game = function(game){};
 
 Game.prototype = {
   preload: function() {
-    console.log("GAME PRELOAD");
     // Preload font
     this.game.add.text(0, 0, "fix", {font:"1px Future", fill:"#FFFFFF"});
 
@@ -65,7 +65,6 @@ Game.prototype = {
   },
 
   create: function() {
-    console.log("GAME CREATE");
     background = game.add.tileSprite(0, 0, width, height, 'background');
 
     this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
@@ -87,12 +86,13 @@ Game.prototype = {
       // Show pause image
       var pause = game.add.button(0,0,'pause',gamePause,this);
 
-      scoreText = game.add.text(width - 150,5,"Score: 0", {
+      scoreText = game.add.text(width - 150,padding,"Score: 000", {
         font: "26px Future",     
-        //font_family: "Future",
-        fill: "#ff0044", 
+        fill: "#ffffff", 
         align: "center"
       });
+
+      scoreText.x = (width - scoreText.width - padding);
 
     },
 
@@ -133,14 +133,15 @@ Game.prototype = {
      //spawnDelta;
      //console.log(timer.expired);
      if (!gameOver) {
-    // newShip();
-
-    ships.add(new Ship());
-
-    numShips++;
-//      newObstacle();
-
-}
+      var r = randNum(4);
+      if (r === 0) {
+        newObstacle();
+      }
+      else {
+      ships.add(new Ship());
+      numShips++;
+      } 
+    }
   } // end spawn function
 
 // Collision detection

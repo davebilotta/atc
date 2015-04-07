@@ -1,8 +1,8 @@
 /* Utility Functions */
 
 function padNum(num) {
-  // Pads score 
-  // TODO: Make this better
+  // Pads score to 3 digits - probably a better way to do this
+
   if (num < 10) {
      return "00" + num;
   }
