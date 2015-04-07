@@ -58,6 +58,7 @@ Game.prototype = {
 
     game.load.image('pause','images/ui/pause.png');
     game.load.image('play','images/ui/play.png');
+    game.load.image('overlay','images/ui/overlay.png');
 
     this.game.state.add('gameOverState', gameOverState);
 
