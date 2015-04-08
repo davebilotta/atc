@@ -1,6 +1,6 @@
 /* Utility Functions */
 
-function padNum(num) {
+function pad(num) {
   // Pads score to 3 digits - probably a better way to do this
 
   if (num < 10) {

@@ -1,16 +1,27 @@
 @font-face {
     font-family: 'Future';
-    src: url('future-webfont.eot');
-    src: url('future-webfont.eot?#iefix') format('embedded-opentype'),
-         url('future-webfont.woff2') format('woff2'),
-         url('future-webfont.woff') format('woff'),
-         url('future-webfont.ttf') format('truetype'),
-         url('future-webfont.svg#kenvector_futureregular') format('svg');
+    src: url('future/future-webfont.eot');
+    src: url('future/future-webfont.eot?#iefix') format('embedded-opentype'),
+         url('future/future-webfont.woff2') format('woff2'),
+         url('future/future-webfont.woff') format('woff'),
+         url('future/future-webfont.ttf') format('truetype'),
+         url('future/future-webfont.svg#kenvector_futureregular') format('svg');
     font-weight: normal;
     font-style: normal;
-    
+}
+
+@font-face {
+    font-family: 'Future Thin';
+    src: url('future_thin/future_thin-webfont.eot');
+    src: url('future_thin/future_thin-webfont.eot?#iefix') format('embedded-opentype'),
+         url('future_thin/future_thin-webfont.woff2') format('woff2'),
+         url('future_thin/future_thin-webfont.woff') format('woff'),
+         url('future_thin/future_thin-webfont.ttf') format('truetype'),
+         url('future_thin/future_thin-webfont.svg#kenvector_futureregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 canvas {
-	font-family: "Future";
+	font-family: "Future Thin";
 }
