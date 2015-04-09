@@ -9,14 +9,14 @@ var SHIP1_SPEED = 40;                   // How fast will a Ship (Class 1) be?
 var SHIP2_SPEED = 60;                   // How fast will a Ship (Class 2) be?
 var UFO_SPEED = 20;                     // How fast will a UFO be?
 var OBSTACLE_MAX_SPEED = 25;            // Max speed of obstacles
-var SPAWN_DELAY = 1.5;                  // How long between new ships/obstacles?
+var SPAWN_DELAY = 4.5;                  // How long between new ships/obstacles?
 var IMAGE_SCALE = 0.33;                 // Image scaling factor
 var gameOver = false;                   // True when the game is over
 var gameOverDelay = 1.5;                // How many seconds before displaying "Game Over" screen
 var RADIANS_TO_DEGREES = 57.2957795;    // 1 Radian = How many degrees?
 var padding = 10;                       // Padding of UI elements (horizontal and vertical)
 
-var SPEED_FACTOR = 1.5;                 // This is how fast the game speeds up/slows down when the slow/fast buttons are clicked
+var SPEED_FACTOR = 2.5;                 // This is how fast the game speeds up/slows down when the slow/fast buttons are clicked
 var gameSpeed = "normal";               // Will be "normal", "slow" or "fast"
 
 var Game = function(game) {};
@@ -101,6 +101,7 @@ function initGame() {
   gameOver = false;
   score = 0;
   numShips = 0;
+  gameSpeed = "normal";
 
   // start spawn loop     
  game.time.events.loop(SPAWN_DELAY * 1000, spawn, game);
@@ -137,7 +138,7 @@ function initUI() {
         newObstacle();
       }
       else {
-        var s = new Ship();
+        var s = new MyShip(numShips);
         ships.add(s.ship);
         shipObj.push(s);
       
@@ -158,7 +159,7 @@ function checkCollisions() {
 
 function collisionEvent() {
   log("COLLISION");
-  levelEnd();
+  //levelEnd();
 }
 
 function levelEnd() {
