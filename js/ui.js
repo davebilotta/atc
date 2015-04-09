@@ -54,7 +54,7 @@ function updateUI() {
 	var s = numShips;
 
 	scoreText.setText("Score: " + pad(s));
-//	console.log("width: " + scoreText.width);
+//	log("width: " + scoreText.width);
 //	scoreText.x = (width - scoreText.width);
 }
 

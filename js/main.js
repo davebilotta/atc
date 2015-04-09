@@ -1,6 +1,7 @@
 var ships, obstacles, scoreText, score, numShips, shipObj;
 
 var debug = false;                      // True if in debug mode
+var logMessages = true;                // True if logging should be enabled
 var width = 1024;                       // Game width
 var height = 768;                       // Game height
 var fontFace = "Future Thin";           // Font (choices are "Future" or "Future Thin")
@@ -93,7 +94,8 @@ Game.prototype = {
 
 function initGame() {
   ships = game.add.group();
-  shipObj = game.add.group();
+  //shipObj = game.add.group();
+  shipObj = new Array();
   obstacles = game.add.group();
 
   gameOver = false;
@@ -101,7 +103,7 @@ function initGame() {
   numShips = 0;
 
   // start spawn loop     
-  game.time.events.loop(SPAWN_DELAY * 1000, spawn, game);
+ game.time.events.loop(SPAWN_DELAY * 1000, spawn, game);
 
 }
 
@@ -113,7 +115,7 @@ function initUI() {
   var pause = game.add.button(90,0,'pause',gamePause,this.game);
   var forward = game.add.button(140,0,'forward',fastSpeed,this.game);
 
-    // Score text 
+  // Score text 
   scoreText = game.add.text(width - 150,padding,"Score: 000", {
         font: "26px "  + fontFace,
         fill: "#ffffff", 
@@ -129,18 +131,17 @@ function initUI() {
 
   function spawn() {
      //spawnDelta;
-     //console.log(timer.expired);
      if (!gameOver) {
       var r = randNum(4);
       if (r === 0) {
         newObstacle();
       }
       else {
-      // Fix this later 
-      var s = new Ship();
-      // 
-    ships.add(s);
-      numShips++;
+        var s = new Ship();
+        ships.add(s.ship);
+        shipObj.push(s);
+      
+        numShips++;
       } 
     }
   } // end spawn function
@@ -156,7 +157,7 @@ function checkCollisions() {
 }
 
 function collisionEvent() {
-  console.log("COLLISION");
+  log("COLLISION");
   levelEnd();
 }
 
@@ -190,12 +191,12 @@ function maybeToggleDebug() {
   if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
     if (debug) {
       debug = false;
-      console.log("Debug is OFF");
+      log("Debug is OFF");
       return;
     }
     else {
       debug = true;
-      console.log("Debug is ON");
+      log("Debug is ON");
       return;
     }
   }
@@ -203,13 +204,13 @@ function maybeToggleDebug() {
 
 // TODO: Move these somewhere else
 function slowSpeed() {
-  adjustSpeed("slow");
+  changeSpeed("slow");
 }
 function normalSpeed() {
-  adjustSpeed("normal");
+  changeSpeed("normal");
 }
 
 function fastSpeed() {
-  adjustSpeed("fast");
+  changeSpeed("fast");
 }
 

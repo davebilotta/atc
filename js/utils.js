@@ -17,3 +17,9 @@ function pad(num) {
 function randNum(max) {
   return game.rnd.integerInRange(0,max);
 } // end randNum
+
+function log(msg) {
+  if (logMessages) {
+    console.log(msg);
+  }
+}
