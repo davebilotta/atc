@@ -9,7 +9,7 @@ var SHIP1_SPEED = 40;                   // How fast will a Ship (Class 1) be?
 var SHIP2_SPEED = 60;                   // How fast will a Ship (Class 2) be?
 var UFO_SPEED = 20;                     // How fast will a UFO be?
 var OBSTACLE_MAX_SPEED = 25;            // Max speed of obstacles
-var SPAWN_DELAY = 4.5;                  // How long between new ships/obstacles?
+var SPAWN_DELAY = 2.5;                  // How long between new ships/obstacles?
 var IMAGE_SCALE = 0.33;                 // Image scaling factor
 var gameOver = false;                   // True when the game is over
 var gameOverDelay = 1.5;                // How many seconds before displaying "Game Over" screen
@@ -138,7 +138,7 @@ function initUI() {
         newObstacle();
       }
       else {
-        var s = new MyShip(numShips);
+        var s = new Ship(numShips);
         ships.add(s.ship);
         shipObj.push(s);
       

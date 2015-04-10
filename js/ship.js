@@ -3,14 +3,18 @@
 var speeds =  [SHIP1_SPEED, SHIP2_SPEED, UFO_SPEED];
 var images = ['ship1', 'ship2', 'ufo'];
 
-function MyShip(id) {
+function Ship(id) {
 
   num = randNum(2);
 
   this.speed = speeds[num];
   this.img = images[num];
   this.id = id;
-  this.ship = game.add.sprite(game.world.randomX,game.world.randomY,this.img);
+
+  // Get spawnX, spawnY, destX, destY
+  var spawnCoords = getSpawnCoordinates();
+
+  this.ship = game.add.sprite(spawnCoords[0],spawnCoords[1],this.img);
 
   this.ship.scale.x = IMAGE_SCALE;
   this.ship.scale.y = IMAGE_SCALE;
@@ -18,8 +22,8 @@ function MyShip(id) {
 
   var rot = game.physics.arcade.moveToXY(
     this.ship,
-    randNum(1000),
-    randNum(600),
+    spawnCoords[2],
+    spawnCoords[3],
     this.speed);
 
 // need to account for the different rotation of individual images
@@ -58,12 +62,12 @@ log("ship created with velocity " + this.velX + ", " + this.velY + " at " + this
 return this;
 }
 
-MyShip.prototype.stop = function() {
+Ship.prototype.stop = function() {
   this.ship.body.velocity.x = 0;
   this.ship.body.velocity.y = 0;
 }
 
-MyShip.prototype.adjustSpeed = function(spd) {
+Ship.prototype.adjustSpeed = function(spd) {
   log("********** Game speed is now " + spd + " **********");
 
   var speedX, speedY;
@@ -90,6 +94,62 @@ switch(spd) {
 this.ship.body.velocity.set(speedX, speedY);
 
 }
+
+function getSpawnCoordinates() {
+  // return array of:
+  //   0: SpawnX
+  //   1: SpawnY
+  //   2: DestinationX
+  //   3: DestinationY
+  var n = randNum(3);     // 0 = North, 1 = East, 2 = South, 3 = West
+  var r = new Array();
+  var w = width;
+  var h = height;
+  var edgeOff = 25;  // border from edges (on either side) where we can spawn
+  var offScrn = 25;  // offset from screen where we spawn or end up
+
+  var sx,sy,dx,dy;
+  switch(n) {
+    case 0: sx = randN(edgeOff,(width - edgeOff));
+            sy = -offScrn;
+            dx = randN(edgeOff,(width - edgeOff));
+            dy = height + offScrn;
+            break;
+    case 1: sx = width + offScrn;
+            sy = randN(edgeOff,(height - edgeOff));
+            dx = -offScrn;
+            dy = randN(edgeOff,(height - edgeOff));
+            break;
+    case 2: sx = randN(edgeOff,(width - edgeOff));
+            sy = height + offScrn;
+            dx = randN(edgeOff,(width - edgeOff));
+            dy = -offScrn;
+    break;
+    case 3: sx = -offScrn;
+            sy = randN(edgeOff,(height - edgeOff));
+            dx = width + offScrn;
+            dy = randN(edgeOff,(height - edgeOff));
+    break;
+    default:
+    log("***** Default, wasn't expecting this *****");
+    break;
+  }
+
+  /* 
+  r.push(game.world.randomX);
+  r.push(game.world.randomY);
+  r.push(randNum(1000));
+  r.push(randNum(600)); */
+
+  r.push(sx);
+  r.push(sy);
+  r.push(dx);
+  r.push(dy);
+
+log(r);
+return r;
+}
+
 
 function changeSpeed(spd) {
   gameSpeed = spd;

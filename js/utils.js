@@ -18,6 +18,10 @@ function randNum(max) {
   return game.rnd.integerInRange(0,max);
 } // end randNum
 
+function randN(min,max) {
+  return game.rnd.integerInRange(min,max);
+}
+
 function log(msg) {
   if (logMessages) {
     console.log(msg);
