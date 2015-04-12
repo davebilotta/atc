@@ -10,6 +10,8 @@ function Ship(id) {
   this.speed = speeds[num];
   this.img = images[num];
   this.id = id;
+  this.selected = false;
+  this.inDanger = false;
 
   // Get spawnX, spawnY, destX, destY
   var spawnCoords = getSpawnCoordinates();
@@ -50,16 +52,41 @@ switch (gameSpeed) {
                spdY = this.velY * SPEED_FACTOR;
         break;
 }
-this.ship.body.velocity.set(spdX, spdY);
+  this.ship.body.velocity.set(spdX, spdY);
 
-// destination: is this needed? just act on collision with world bounds?
-this.ship.body.collideWorldBounds = false;
-game.physics.arcade.gravity.x = 0;
-this.ship.body.moves = true;
+  // destination: is this needed? just act on collision with world bounds?
+  this.ship.body.collideWorldBounds = false;
+  game.physics.arcade.gravity.x = 0;
+  this.ship.body.moves = true;
+  this.ship.inputEnabled = true;
 
-log("ship created with velocity " + this.velX + ", " + this.velY + " at " + this.ship.x + "," + this.ship.y);
+  this.ship.events.onInputDown.add(shipTouched, this);
+
+//log("ship created with velocity " + this.velX + ", " + this.velY + " at " + this.ship.x + "," + this.ship.y);
 
 return this;
+}
+
+function shipTouched() {
+  // TODO: Maybe store off this ship's ID (and a var to say that a ship is currently
+  //       selected) so we don't need to search every render?
+
+  if (this.selected) { 
+    this.selected = true;
+  }
+  else {
+    unSelectAll();
+    this.selected = true;
+  }
+
+ // findSelectedShip();
+
+}
+
+function unSelectAll() {
+  for (var i = 0; i < shipObj.length; i++) {
+    shipObj[i].selected = false;
+  }
 }
 
 Ship.prototype.stop = function() {
@@ -135,21 +162,13 @@ function getSpawnCoordinates() {
     break;
   }
 
-  /* 
-  r.push(game.world.randomX);
-  r.push(game.world.randomY);
-  r.push(randNum(1000));
-  r.push(randNum(600)); */
-
   r.push(sx);
   r.push(sy);
   r.push(dx);
   r.push(dy);
 
-log(r);
-return r;
+  return r;
 }
-
 
 function changeSpeed(spd) {
   gameSpeed = spd;
@@ -164,3 +183,5 @@ function stopAllShips() {
     ships.getAt(i).body.velocity.set(0,0);
   }
 }
+
+

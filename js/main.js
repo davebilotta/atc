@@ -19,6 +19,8 @@ var padding = 10;                       // Padding of UI elements (horizontal an
 var SPEED_FACTOR = 2.5;                 // This is how fast the game speeds up/slows down when the slow/fast buttons are clicked
 var gameSpeed = "normal";               // Will be "normal", "slow" or "fast"
 
+var selCircle;  // This is the circle around the current selected ship
+
 var Game = function(game) {};
 
 Game.prototype = {
@@ -32,7 +34,7 @@ Game.prototype = {
     game.load.image('meteorSmall','images/meteorSmall.png');
     game.load.image('meteorLarge','images/meteorBig.png');
     game.load.image('background', 'images/bg/blue.png');
-
+    
     game.load.image('0', 'images/ui/numbers/0.png');
     game.load.image('1', 'images/ui/numbers/1.png');
     game.load.image('2', 'images/ui/numbers/2.png');
@@ -75,6 +77,12 @@ Game.prototype = {
         this.debugShips();
         this.debugObstacles();
       }
+
+      var id = findSelectedShip();
+      if (id != -1) {
+        highlightSelectedShip(id);
+      }
+
 
       updateUI();
     },
@@ -151,8 +159,15 @@ function initUI() {
 function checkCollisions() {
   // Check collision between ships and obstacles
   if (!gameOver) {
-    game.physics.arcade.collide(ships, ships, collisionEvent);
-    game.physics.arcade.overlap(ships, obstacles, collisionEvent);
+
+//    for (var i = 0; i < ships.length; i++) {
+      game.physics.arcade.collide(ships,ships, collisionEvent);
+  //  }
+    //game.physics.arcade.collide(tank, enemies[i].tank);
+    //game.physics.arcade.collide(ships, ships, collisionEvent);
+    // TODO: Check ships colliding with obstacles
+    //game.physics.arcade.overlap(ships, obstacles, collisionEvent);
+    // TODO: Check obstacles colliding with obstacles? Or should this never happen?
     //game.physics.arcade.overlap(obstacles, obstacles, collisionEvent);
   }
 }

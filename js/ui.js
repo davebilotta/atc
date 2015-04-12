@@ -58,3 +58,26 @@ function updateUI() {
 //	scoreText.x = (width - scoreText.width);
 }
 
+function highlightSelectedShip(id) {
+	var s = shipObj[id].ship;
+
+	selCircle = new Phaser.Circle(s.body.x, s.body.y, Math.max(s.body.width,s.body.height));
+	game.debug.geom(selCircle,'#cfffff');
+
+}
+
+// Can this be stored when the touch event occurs so it doesn't need to be found every time?
+function findSelectedShip() {
+  var r = -1;
+  var done = false;
+
+  for (var i = 0; (i < shipObj.length & (!done)); i++) {
+    if (shipObj[i].selected) {
+      r = shipObj[i].id;
+      done = true;
+  	}
+  }
+
+  return r;
+}
+
